@@ -44,6 +44,7 @@ const handleSearchFormSubmit = async event => {
     };
     } catch (err) {
       console.log(err);
+      Notiflix.Notify.failure('Oops, something went wrong :(');
   }
 };
 
@@ -101,7 +102,8 @@ const handleLoadMoreBtnClick = async () => {
                 
         };
     } catch (err) {
-        console.log(err)
+        console.log(err);
+        Notiflix.Notify.failure('Oops, something went wrong :(');
     }
 }
 

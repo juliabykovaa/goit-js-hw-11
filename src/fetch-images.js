@@ -25,6 +25,7 @@ export class PixabayAPI {
     });
         } catch (error) {
             throw new Error(error.message);
+            Notiflix.Notify.failure('Oops, something went wrong :(');
       }
     
   }
