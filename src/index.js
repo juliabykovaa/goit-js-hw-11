@@ -15,8 +15,10 @@ const handleSearchFormSubmit = async event => {
     event.preventDefault();
     const searchQuery = inputEl.value;
     pixabayApi.query = searchQuery.trim();
+    pixabayApi.page = 1;
 
-  try {
+    try {
+        
       const { data } = await pixabayApi.fetchPhotos();
       gallery.innerHTML = renderImages(data.hits);
       lightbox.refresh();
@@ -29,8 +31,7 @@ const handleSearchFormSubmit = async event => {
             }, 300);
           gallery.innerHTML = "";
           loadMoreBtnEl.classList.add('is-hidden');
-        }
-        if (data.hits.length > 0){
+        } else {
            setTimeout(() => {
             Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         }, 300);
@@ -39,9 +40,7 @@ const handleSearchFormSubmit = async event => {
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
         loadMoreBtnEl.classList.add('is-hidden');
        }
-       if (data.hits.length === data.totalHits && data.hits.length > 0) {
-            endCollection();
-    };
+      
     } catch (err) {
       console.log(err);
       Notiflix.Notify.failure('Oops, something went wrong :(');
@@ -97,10 +96,10 @@ const handleLoadMoreBtnClick = async () => {
         gallery.insertAdjacentHTML('beforeend', renderImages(data.hits));
         lightbox.refresh();
         onScroll();
-        if (pixabayApi.page === data.total_pages) {
-            loadMoreBtnEl.classList.add('is-hidden');
-                
-        };
+        const allPageElements = document.querySelectorAll('.photo-card');
+        if (allPageElements.length === data.totalHits) {
+        endCollection();
+    };
     } catch (err) {
         console.log(err);
         Notiflix.Notify.failure('Oops, something went wrong :(');
